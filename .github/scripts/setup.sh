@@ -3,6 +3,7 @@ set -xeo pipefail
 
 RUNNER_NAME=$(curl http://metadata.google.internal/computeMetadata/v1/instance/attributes/RUNNER_NAME -H "Metadata-Flavor: Google")
 VM_TOKEN=$(curl http://metadata.google.internal/computeMetadata/v1/instance/attributes/VM_TOKEN -H "Metadata-Flavor: Google")
+HOMEBREW_GITHUB_API_TOKEN=$(curl http://metadata.google.internal/computeMetadata/v1/instance/attributes/HOMEBREW_GITHUB_API_TOKEN -H "Metadata-Flavor: Google")
 
 # Initial setup: setup docker and github actions runner.
 # This is done only once, if the machine is stopped/started, this block of code is not executed again.
@@ -36,7 +37,7 @@ if [ ! -d "/home/actions" ]; then
     source /home/actions/actions-runner/bin/installdependencies.sh
 
     # This needs to be run with the actions user:
-    RUNNER_NAME=$RUNNER_NAME VM_TOKEN=$VM_TOKEN su -c "/home/actions/config_runner.sh" actions
+    RUNNER_NAME=$RUNNER_NAME VM_TOKEN=$VM_TOKEN HOMEBREW_GITHUB_API_TOKEN=$HOMEBREW_GITHUB_API_TOKEN su -c "/home/actions/config_runner.sh" actions
 fi
 
 curl -o start_runner.sh https://raw.githubusercontent.com/Homebrew/actions/master/create-gcloud-instance/start_runner.sh
