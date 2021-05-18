@@ -37,7 +37,7 @@ if [ ! -d "/home/actions" ]; then
     source /home/actions/actions-runner/bin/installdependencies.sh
 
     # This needs to be run with the actions user:
-    RUNNER_NAME=$RUNNER_NAME VM_TOKEN=$VM_TOKEN HOMEBREW_GITHUB_API_TOKEN=$HOMEBREW_GITHUB_API_TOKEN su -c "/home/actions/config_runner.sh" actions
+    RUNNER_NAME=$RUNNER_NAME VM_TOKEN=$VM_TOKEN REPO_NAME=$REPO_NAME GITHUB_TOKEN=$HOMEBREW_GITHUB_API_TOKEN su -c "/home/actions/config_runner.sh" actions
 fi
 
 curl -o start_runner.sh https://raw.githubusercontent.com/Homebrew/actions/master/create-gcloud-instance/start_runner.sh
