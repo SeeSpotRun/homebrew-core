@@ -10,6 +10,7 @@ GCLOUD_ZONE="europe-west1-b"
 GCLOUD_MACHINE="e2-standard-2"
 GCLOUD_DISK_SIZE="30GB"
 STARTUP_SCRIPT=".github/scripts/setup.sh"
+REPO_NAME=Homebrew/homebrew-core
 
 echo ">> checking for already existing $RUNNER_NAME instance"
 runner=$(gcloud compute instances list --format="value(name)" --filter="$RUNNER_NAME" | head -n 1)
@@ -39,4 +40,4 @@ gcloud compute --project=$GCP_PROJECT_ID instances create $RUNNER_NAME \
                --shielded-integrity-monitoring \
                --reservation-affinity=any \
                --metadata-from-file startup-script=$STARTUP_SCRIPT \
-               --metadata RUNNER_NAME=$RUNNER_NAME,VM_TOKEN=$VM_TOKEN,HOMEBREW_GITHUB_API_TOKEN=$HOMEBREW_GITHUB_API_TOKEN
+               --metadata RUNNER_NAME=$RUNNER_NAME,VM_TOKEN=$VM_TOKEN,REPO_NAME=$REPO_NAME,GITHUB_TOKEN=$HOMEBREW_GITHUB_API_TOKEN
