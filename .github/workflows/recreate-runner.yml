@@ -14,12 +14,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
-        with:
-          node-version: 12
-      - run: npm install @octokit/action
       - name: Set up Cloud SDK
-        uses: google-github-actions/setup-gcloud@master
+        uses: google-github-actions/setup-gcloud@v0.2.1
         with:
           project_id: ${{ secrets.GCP_PROJECT_ID }}
           service_account_key: ${{ secrets.GCP_SA_KEY }}
@@ -30,7 +26,6 @@ jobs:
         with:
           github_token: ${{ secrets.HOMEBREW_GITHUB_PUBLIC_REPO_TOKEN }}
           runner_name: linux-self-hosted-1
-          repository_name: ${{ github.event.repository.full_name }}
       - name: Kill runner and create a new one
         if: ${{ steps.killable.outputs.runner-found == 'true' && steps.killable.outputs.runner-idle == 'true' }}
         run: bash .github/scripts/create_gcloud_instance.sh
