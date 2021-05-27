@@ -1,16 +1,16 @@
 class Httpx < Formula
   desc "Fast and multi-purpose HTTP toolkit"
   homepage "https://github.com/projectdiscovery/httpx"
-  url "https://github.com/projectdiscovery/httpx/archive/v1.0.6.tar.gz"
-  sha256 "bfe25ca0984c1384a6ae99a926f9ebcda863dfd296472a43b5cb2f65b20673f8"
+  url "https://github.com/projectdiscovery/httpx/archive/v1.0.8.tar.gz"
+  sha256 "38b600934ea0dbe31b23c5e1a13f3c201f6392f38bf46ce02f94a2b55d824c5e"
   license "MIT"
   head "https://github.com/projectdiscovery/httpx.git"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "68f6e09a6d8f547c71fdeb48c7c9aa3034d2839aed5b4f9e2d3bd66555b3ea3c"
-    sha256 cellar: :any_skip_relocation, big_sur:       "855f4fd67c8c9004bd945d3fbfe58b7973d596d6aad68fb1ee37d1f7db9677f3"
-    sha256 cellar: :any_skip_relocation, catalina:      "0ce82793697d8ce3af8ddec0ec8fb1f0f6385d5c19b7147ae1351d7f07aae435"
-    sha256 cellar: :any_skip_relocation, mojave:        "eb7bb678b52874d1cd0555acdc01c4e6404ad3e4974b893cf920859e9f32770e"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "09ee8166577c0f14c0c66d51b35efca6bc9aa03b910c6778c66a85b3af2e0892"
+    sha256 cellar: :any_skip_relocation, big_sur:       "42c7585bcf75e7e58e18efe938e268c3368f311127c5091d098d4b7f8c43ad7e"
+    sha256 cellar: :any_skip_relocation, catalina:      "a61811749795fecbd1b8138859aa1c859c047191ef3565f1afcea80de6ce1325"
+    sha256 cellar: :any_skip_relocation, mojave:        "4ae4b51cf613a83bb3043d67ec1bf51f91a27604b5e038eb552debe9d85c47a2"
   end
 
   depends_on "go" => :build

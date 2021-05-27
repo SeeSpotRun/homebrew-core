@@ -1,8 +1,8 @@
 class FluentBit < Formula
   desc "Data Collector for IoT"
   homepage "https://github.com/fluent/fluent-bit"
-  url "https://github.com/fluent/fluent-bit/archive/v1.7.5.tar.gz"
-  sha256 "b27b55068d87448e6267db627e45902249aae1b83ef552be62ecf3b01eb2ef26"
+  url "https://github.com/fluent/fluent-bit/archive/v1.7.7.tar.gz"
+  sha256 "ddfc4df39a1da01c5e7503db59340c3b287741b5d0cb710f94f5f7551f41c888"
   license "Apache-2.0"
   head "https://github.com/fluent/fluent-bit.git"
 
@@ -12,9 +12,9 @@ class FluentBit < Formula
   end
 
   bottle do
-    sha256 cellar: :any, big_sur:  "dd195035cd03ad816c594a42d9c9a994e5ec63885e64e9f8a116230dc22e7e9d"
-    sha256 cellar: :any, catalina: "1d0af80417663d414b304d44bc46ee64fea28dfa106ea23265533869c928492f"
-    sha256 cellar: :any, mojave:   "833f4bd303616b62807640203fa8b2277d4b204080c48f5b803b7d773c659aa8"
+    sha256 cellar: :any, big_sur:  "ff69f5d8efe970c1b9667b42a91f052392333910babb7071e2a74e1b198bb67f"
+    sha256 cellar: :any, catalina: "0345803f857a8c16c6d7305736f1b597b9c149805366482f3b897cb56c9b4b6d"
+    sha256 cellar: :any, mojave:   "0b6088ab0b5f33be13c2d3af5dfa35cbdd187372821da9a08e0366e6ed8b5035"
   end
 
   depends_on "bison" => :build
@@ -26,13 +26,15 @@ class FluentBit < Formula
   end
 
   def install
-    # Per https://luajit.org/install.html: If MACOSX_DEPLOYMENT_TARGET
-    # is not set then it's forced to 10.4, which breaks compile on Mojave.
-    # fluent-bit builds against a vendored Luajit.
-    ENV["MACOSX_DEPLOYMENT_TARGET"] = MacOS.version
+    chdir "build" do
+      # Per https://luajit.org/install.html: If MACOSX_DEPLOYMENT_TARGET
+      # is not set then it's forced to 10.4, which breaks compile on Mojave.
+      # fluent-bit builds against a vendored Luajit.
+      ENV["MACOSX_DEPLOYMENT_TARGET"] = MacOS.version
 
-    system "cmake", ".", "-DWITH_IN_MEM=OFF", *std_cmake_args
-    system "make", "install"
+      system "cmake", "..", "-DWITH_IN_MEM=OFF", *std_cmake_args
+      system "make", "install"
+    end
   end
 
   test do
