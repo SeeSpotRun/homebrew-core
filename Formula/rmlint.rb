@@ -1,10 +1,12 @@
 class Rmlint < Formula
   desc "Extremely fast tool to remove dupes and other lint from your filesystem"
   homepage "https://github.com/sahib/rmlint"
-  url "https://github.com/sahib/rmlint/archive/v2.10.1.tar.gz"
-  sha256 "10e72ba4dd9672d1b6519c0c94eae647c5069c7d11f1409a46e7011dd0c6b883"
+  url "https://github.com/SeeSpotRun/rmlint/archive/macport.tar.gz"
+  version "20210527"
+  sha256 "822b7b2d7f62ae2790e075282100f0c01ba7a07e4e6c8b11fa9bc51226cc4b2b"
   license "GPL-3.0-or-later"
 
+  option "with-gui", "Also build 'shredder' gui for rmlint"
   bottle do
     sha256 cellar: :any, arm64_big_sur: "4a8bd2357b069ad4be2327e14569931add4a6063f7642cc5a50ee0918e752362"
     sha256 cellar: :any, big_sur:       "1f6f76bfe7c4f4c058b91a0808e6e19a0029f4a4017929615bc223666abddf5a"
@@ -17,9 +19,22 @@ class Rmlint < Formula
   depends_on "pkg-config" => :build
   depends_on "scons" => :build
   depends_on "sphinx-doc" => :build
-  depends_on "glib"
+  #depends_on "glib"
   depends_on "json-glib"
   depends_on "libelf"
+  if build.with? "gui"
+    # gui dependencies:
+    depends_on "pygobject3"
+    #depends_on "gtk+3"
+    #depends_on "gobject-introspection"
+    #depends_on "librsvg"
+    #depends_on "xorg-server"
+    #depends_on "gsettings-desktop-schemas"
+    depends_on "gtksourceview3"
+    #depends_on "hicolor-icon-theme"
+    #depends_on "gnome-icon-theme"
+    depends_on "adwaita-icon-theme"
+  end
 
   def install
     # patch to address bug affecting High Sierra & Mojave introduced in rmlint v2.10.0
@@ -32,10 +47,24 @@ class Rmlint < Formula
       "    rc = faccessat(AT_FDCWD, path, R_OK, AT_EACCESS);"
     end
 
-    system "scons", "config"
-    system "scons"
-    bin.install "rmlint"
-    man1.install "docs/rmlint.1.gz"
+    if build.with? "gui"
+      system "scons", "config"
+      system "scons", "--prefix=#{prefix}/", "install", "--without-schemas-compile"
+    else
+      system "scons", "--without-gui", "config"
+      system "scons", "--without-gui", "--prefix=#{prefix}/", "install"
+    end
+  end
+
+  def post_install
+    if build.with? "gui"
+      system "#{Formula["glib"].opt_bin}/glib-compile-schemas",
+        "#{HOMEBREW_PREFIX}/share/glib-2.0/schemas"
+      system "#{Formula["gtk+3"].opt_bin}/gtk3-update-icon-cache", "-f", "-t",
+        "#{HOMEBREW_PREFIX}/share/icons/hicolor"
+      system "#{Formula["gtk+3"].opt_bin}/gtk3-update-icon-cache", "-f", "-t",
+        "#{HOMEBREW_PREFIX}/share/icons/Adwaita"
+    end
   end
 
   test do
